@@ -23,7 +23,6 @@ import sys
 import threading
 import time
 import tkinter as tk
-from pathlib import Path
 from tkinter import ttk
 
 from wordlink_solver import (
@@ -432,6 +431,12 @@ class HudApp(tk.Tk):
             self.ocr_after_id = None
 
     def _schedule_next_auto_read(self) -> None:
+        # Cancel any pending read first so overlapping triggers (e.g. a manual
+        # Read or recalibration while Auto is on) never fork a second polling
+        # chain at double rate.
+        if self.ocr_after_id is not None:
+            self.after_cancel(self.ocr_after_id)
+            self.ocr_after_id = None
         if self.auto_ocr.get():
             self.ocr_after_id = self.after(AUTO_INTERVAL_MS, self._read_ocr_once)
 
