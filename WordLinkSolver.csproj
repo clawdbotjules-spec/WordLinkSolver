@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- Physical-pixel coordinates everywhere: capture, overlay and window
+         rectangles must agree, so the process is fully DPI aware. -->
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>WordLinkSolver</RootNamespace>
+    <AssemblyName>WordLinkSolver</AssemblyName>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <Product>WordLink Solver</Product>
+    <Description>Real-time OCR overlay solver for the WordLink game</Description>
+    <!-- Allows compiling (not running) on non-Windows build agents. -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The test project lives in a subfolder; keep it out of this build. -->
+    <Compile Remove="WordLinkSolver.Tests\**" />
+    <None Remove="WordLinkSolver.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Fallback OCR engine (used only when WinRT OCR is unavailable and a
+         tessdata/eng.traineddata file is provided next to the executable). -->
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\sowpods.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Resources\icon.ico" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

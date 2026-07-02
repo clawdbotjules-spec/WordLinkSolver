@@ -1,0 +1,32 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Core-logic tests run anywhere; keep a fast Linux leg for signal.
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet test WordLinkSolver.Tests/WordLinkSolver.Tests.csproj -c Release
+
+  # The real thing: full WinForms app build + tests on Windows.
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet build WordLinkSolver.sln -c Release
+      - run: dotnet test WordLinkSolver.Tests/WordLinkSolver.Tests.csproj -c Release --no-restore
+      - run: dotnet publish WordLinkSolver.csproj -c Release -o publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WordLinkSolver
+          path: publish/

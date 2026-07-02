@@ -1,0 +1,19 @@
+# Build outputs
+bin/
+obj/
+publish/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Test results
+TestResults/
+*.trx
+
+# OS
+Thumbs.db
+.DS_Store
