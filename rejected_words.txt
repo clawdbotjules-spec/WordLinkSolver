@@ -1,0 +1,29 @@
+# Words rejected by the game or too obscure to prioritize.
+# Add one uppercase word per line. The HUD's Reject button appends here.
+ADNEX
+ANEND
+AYOND
+AYONT
+DENAT
+DENDA
+DEXTRAD
+DEXTRAN
+DONAR
+DONAX
+DONEE
+DONEY
+DONNE
+ENTAD
+NENTA
+NONDA
+NONTRADE
+NONYA
+NONTAX
+NOYADE
+TRANEEN
+YADE
+YEAN
+YEAT
+YEDE
+YOND
+YONT

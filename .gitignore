@@ -1,19 +1,22 @@
+__pycache__/
+*.py[cod]
+
+# Compiled OCR helper
+fast_ocr
+
+# Local calibration/debug captures
+wordlink_config.json
+calibration_screenshot.png
+last_ocr_crop.png
+
+# Dictionary build inputs (downloaded separately)
+baby-names.csv
+vendor/
+
 # Build outputs
-bin/
-obj/
-publish/
+build/
+dist/
+*.dmg
 
-# IDE
-.vs/
-.vscode/
-.idea/
-*.user
-*.suo
-
-# Test results
-TestResults/
-*.trx
-
-# OS
-Thumbs.db
+# macOS metadata
 .DS_Store

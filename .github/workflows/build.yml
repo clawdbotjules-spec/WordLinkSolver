@@ -5,28 +5,30 @@ on:
   pull_request:
 
 jobs:
-  # Core-logic tests run anywhere; keep a fast Linux leg for signal.
+  # Solver + dictionary tests are pure stdlib Python: fast Linux signal.
   test-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-python@v5
         with:
-          dotnet-version: 8.0.x
-      - run: dotnet test WordLinkSolver.Tests/WordLinkSolver.Tests.csproj -c Release
+          python-version: "3.12"
+      - run: python3 -m unittest discover -s tests -v
+      - run: python3 -m py_compile wordlink_solver.py hud.py app.py build_game_dictionary.py
+      - name: CLI smoke test
+        run: python3 wordlink_solver.py OTNIFPSNORAGNOAY --limit 10
 
-  # The real thing: full WinForms app build + tests on Windows.
-  build-windows:
-    runs-on: windows-latest
+  # The real target platform: compile the Vision OCR helper and run the same
+  # tests on macOS.
+  build-macos:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-      - run: dotnet build WordLinkSolver.sln -c Release
-      - run: dotnet test WordLinkSolver.Tests/WordLinkSolver.Tests.csproj -c Release --no-restore
-      - run: dotnet publish WordLinkSolver.csproj -c Release -o publish
+      - run: swiftc -O fast_ocr.swift -o fast_ocr
+      - run: ./fast_ocr 2>err.txt || grep -q "usage:" err.txt  # arg validation works
+      - run: python3 -m unittest discover -s tests -v
+      - run: python3 wordlink_solver.py OTNIFPSNORAGNOAY --limit 10
       - uses: actions/upload-artifact@v4
         with:
-          name: WordLinkSolver
-          path: publish/
+          name: fast_ocr
+          path: fast_ocr

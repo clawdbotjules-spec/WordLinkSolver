@@ -1,0 +1,3 @@
+# For packaging the HUD as a macOS .app bundle.
+-r requirements.txt
+pyinstaller==6.21.0
